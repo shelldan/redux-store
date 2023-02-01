@@ -1,12 +1,19 @@
+// import react dependencies 
 import React from 'react';
-import { useStoreContext } from "../../utils/GlobalState";
+import { useDispatch } from 'react-redux'
+
+
+// import { useStoreContext } from "../../utils/GlobalState";
+
+// import utils dependencies 
 import { REMOVE_FROM_CART, UPDATE_CART_QUANTITY } from "../../utils/actions";
 import { idbPromise } from "../../utils/helpers";
 
 const CartItem = ({ item }) => {
+  const dispatch = useDispatch();
+  //const [, dispatch] = useStoreContext();
 
-  const [, dispatch] = useStoreContext();
-
+  // remove item with matching item._id from cart
   const removeFromCart = item => {
     dispatch({
       type: REMOVE_FROM_CART,
@@ -16,6 +23,7 @@ const CartItem = ({ item }) => {
 
   };
 
+  // change value based on change to item.purchaseQuantity
   const onChange = (e) => {
     const value = e.target.value;
     if (value === '0') {
