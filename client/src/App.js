@@ -1,5 +1,9 @@
+// import react dependencies 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux'
+
+// import apollo dependencies 
 import {
   ApolloClient,
   InMemoryCache,
@@ -8,22 +12,30 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
+// import the store file 
+import store from './utils/store';
+
+// import pages 
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 import NoMatch from './pages/NoMatch';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Nav from './components/Nav';
-import { StoreProvider } from './utils/GlobalState';
+//import { StoreProvider } from './utils/GlobalState';
 import Success from './pages/Success';
 import OrderHistory from './pages/OrderHistory';
 
+// create main GraphQL API endpoint
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
 
+// create request middleware
 const authLink = setContext((_, { headers }) => {
+  // get the token from local storage
   const token = localStorage.getItem('id_token');
+  // return the headers to the context 
   return {
     headers: {
       ...headers,
@@ -32,6 +44,7 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+// create Apollo client
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
@@ -42,39 +55,18 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <div>
-          <StoreProvider>
+          <Provider store={store}>
             <Nav />
-            <Routes>
-              <Route 
-                path="/" 
-                element={<Home />} 
-              />
-              <Route 
-                path="/login" 
-                element={<Login />} 
-              />
-              <Route 
-                path="/signup" 
-                element={<Signup />} 
-              />
-              <Route 
-                path="/success" 
-                element={<Success />} 
-              />
-              <Route 
-                path="/orderHistory" 
-                element={<OrderHistory />} 
-              />
-              <Route 
-                path="/products/:id" 
-                element={<Detail />} 
-              />
-              <Route 
-                path="*" 
-                element={<NoMatch />} 
-              />
-            </Routes>
-          </StoreProvider>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={Signup} />
+              <Route exact path="/success" component={Success} />
+              <Route exact path="/orderHistory" component={OrderHistory} />
+              <Route exact path="/products/:id" component={Detail} />
+              <Route component={NoMatch} />
+            </Switch>
+          </Provider>
         </div>
       </Router>
     </ApolloProvider>
