@@ -1,6 +1,4 @@
-import { useReducer } from "react";
-
-// import the action file 
+// import the action file
 import {
   UPDATE_PRODUCTS,
   ADD_TO_CART,
@@ -23,7 +21,7 @@ const initialState = {
 }
 
 // set the initial state of the reducer
-export const reducer = (state, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_PRODUCTS:
       return {
@@ -97,6 +95,4 @@ export const reducer = (state, action) => {
   }
 };
 
-export function useProductReducer(initialState) {
-  return useReducer(reducer, initialState)
-}
+export default reducer;

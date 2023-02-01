@@ -1,9 +1,9 @@
-// import react dependencies 
+// import react dependencies
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 
-// import apollo dependencies 
+// import apollo dependencies
 import {
   ApolloClient,
   InMemoryCache,
@@ -12,17 +12,16 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-// import the store file 
+// import the store file
 import store from './utils/store';
 
-// import pages 
+// import pages
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 import NoMatch from './pages/NoMatch';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Nav from './components/Nav';
-//import { StoreProvider } from './utils/GlobalState';
 import Success from './pages/Success';
 import OrderHistory from './pages/OrderHistory';
 
@@ -33,9 +32,9 @@ const httpLink = createHttpLink({
 
 // create request middleware
 const authLink = setContext((_, { headers }) => {
-  // get the token from local storage
+  // get the token from local storage 
   const token = localStorage.getItem('id_token');
-  // return the headers to the context 
+  // return the headers to the context
   return {
     headers: {
       ...headers,
